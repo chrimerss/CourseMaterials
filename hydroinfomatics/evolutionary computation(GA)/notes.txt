@@ -1,0 +1,6 @@
+Procedures for GA:
+1.calculate fitness
+2. (a) Pick 2 population   (according to expectation)
+   (b) make a new element
+           crossover:
+           mutation:
