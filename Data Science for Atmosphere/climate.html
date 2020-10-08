@@ -1,0 +1,113 @@
+<html>
+    <title>Animation of SST</title>
+    <script>
+    // semi-colons are optional in javascript, and are often not included in this code!  
+    var maxFrameNum=11 
+    var delay = 1000 // time between frames in milliseconds
+    var frameNum = 0    // The frame counter: keeps track of current frame
+    var timeout_id = null  // Allows us to stop the animation with clearTimeout( )
+    var aniFrames = new Array()
+    aniFrames[0] = new Image();
+aniFrames[0].src = "climatedir/0000.png";
+aniFrames[1] = new Image();
+aniFrames[1].src = "climatedir/0001.png";
+aniFrames[2] = new Image();
+aniFrames[2].src = "climatedir/0002.png";
+aniFrames[3] = new Image();
+aniFrames[3].src = "climatedir/0003.png";
+aniFrames[4] = new Image();
+aniFrames[4].src = "climatedir/0004.png";
+aniFrames[5] = new Image();
+aniFrames[5].src = "climatedir/0005.png";
+aniFrames[6] = new Image();
+aniFrames[6].src = "climatedir/0006.png";
+aniFrames[7] = new Image();
+aniFrames[7].src = "climatedir/0007.png";
+aniFrames[8] = new Image();
+aniFrames[8].src = "climatedir/0008.png";
+aniFrames[9] = new Image();
+aniFrames[9].src = "climatedir/0009.png";
+aniFrames[10] = new Image();
+aniFrames[10].src = "climatedir/0010.png";
+aniFrames[11] = new Image();
+aniFrames[11].src = "climatedir/0011.png";
+
+
+    document.onkeydown = myKeyDownHandler;
+
+    function myKeyDownHandler(e){
+        if (timeout_id!=null) {killAnimate()} 
+    //  if (e.which==13) {Animate()} // oddly, the enter key seems to be reserved for repeating the last click  
+        if (e.which==39 || e.which==40) {incrementFrame()} // rightarrow
+        if (e.which==37 || e.which==38) {decrementFrame()} // leftarrow
+    //    alert(e.which+" was pressed")
+    }
+
+    // This function performs the animation. 
+    function xanimate() {
+        incrementFrame()
+        timeout_id = setTimeout("xanimate()", delay )  // Display the next frame after delay millisecs
+    }
+    //A better way? http://creativejs.com/resources/requestanimationframe/ 
+    function yanimate() {
+        timeout_id = setTimeout( function() {
+        requestAnimationFrame(yanimate);
+        incrementFrame();
+        }, delay );  // Display the next frame after delay millisecs
+    }
+
+    function slower() {
+        delay=delay*1.5
+        if (delay > 4000) delay = 4000
+    }
+
+    function faster() {
+        delay=delay*2/3
+        if (delay < 50 ) delay = 50
+    }
+
+    function incrementFrame(){
+        frameNum++ 
+        if (frameNum > maxFrameNum) { frameNum = 0  }
+        showFrame()
+    }
+
+    function decrementFrame(){
+        frameNum+=-1 
+        if (frameNum < 0 ) { frameNum = maxFrameNum  }
+        showFrame()
+    }
+
+    // Note that we refer to the onscreen image and text using the id imageWindow and textWindow,  defined by us.
+    function showFrame(){
+        var str = "" + frameNum
+        var pad = "000"
+        var frameNumPad = pad.substring(0, pad.length - str.length) + str    
+        document.getElementById('textWindow').innerHTML = frameNumPad // Display frame number as text 
+        document.imageWindow.src = aniFrames[frameNum].src // Display the current frame image
+    }
+
+    function killAnimate(){
+    if (timeout_id) clearTimeout(timeout_id)
+    timeout_id=null
+    }
+    </script>
+    <body><center>
+<table><tr><td width=1>
+
+    <form>  <!-- This form contains buttons to control the animation -->
+        <input value="Slower" onclick="slower()" type="button">
+        <input value="1 sec" onclick="delay=1000;" type="button">
+        <input value="Faster" onclick="faster()" type="button">
+        <input style="color: rgb(0, 0, 0); background-color: rgb(153, 255, 153);"
+               value="Start" onclick="if (timeout_id == null) yanimate( );" type="button">
+        <input value="Stop" onclick="killAnimate();" type="button">
+        <input value="-1" onclick="killAnimate(); decrementFrame();" type="button">
+        <input value="+1" onclick="killAnimate(); incrementFrame();" type="button">
+        <input value="First" onclick="killAnimate(); frameNum=0; showFrame();" type="button">
+        <input value="Last" onclick="killAnimate(); frameNum=maxFrameNum; showFrame();" type="button">
+        &nbsp;&nbsp;<b id='textWindow'>000</b> 
+    </form>
+    </td><td>
+<img name="imageWindow" src="climatedir/0000.png" alt="your image should have been seen here!"></td></tr></table>
+</center></body></html>

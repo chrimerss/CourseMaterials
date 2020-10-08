@@ -1,0 +1,13 @@
+<style>
+div.text_cell_render{
+    background-color: #bcb;
+    }
+.rendered_html code {
+    background-color: #bcb;
+    color: #900;
+}
+.rendered_html pre {
+    background-color: #bcb;
+    color: #900;
+}
+</style>
