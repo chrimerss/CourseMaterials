@@ -1,0 +1,16 @@
+import numpy       as np
+import matplotlib as mpl
+from HBVMod import HBVMod
+
+forcing=np.genfromtxt('Forcing.txt',  dtype=float, autostrip=True)
+
+          #      Imax Ce Sumax beta Pmax   Tlag   Kf  Ks
+Par = np.array([2,   .5,  100,   2,  .01,    5,   .05,  .001])
+              #Si, Su,   Sf, Ss
+Sin= np.array([0,  100,  0,  5  ])
+
+forcing= forcing[:,3:6]
+
+Qm = HBVMod(Par,forcing,Sin, hydrograph='TRUE')
+
+

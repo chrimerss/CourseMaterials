@@ -1,0 +1,115 @@
+import numpy       as np
+import matplotlib.pyplot as plt
+from Weigfun import Weigfun
+
+def HBVMod( Par,forcing,Sin, hydrograph):
+	#HBVpareto Calculates values of 3 objective functions for HBV model
+
+	Imax=Par[0]
+	Ce=Par[1]
+	Sumax=Par[2]
+	beta=...
+	...
+
+
+	Prec=forcing[:,0]
+	Qo=...
+	Etp=...
+
+
+	tmax=len(Prec)
+	
+	# allocate Si, Su, Sf, Ss, Eidt, Eadt, Qtotdt
+	Si=np.zeros(tmax)
+	Su=...
+	...
+	...
+
+	# initialize Si, Su, Sf, Ss
+	Si[0]=Sin[0]
+	...
+
+	dt=1
+
+	#
+	# Model 1 SOF1
+	for i in range(0,tmax):
+	    Pdt=Prec[i]*dt
+	    Epdt=Etp[i]*dt
+	    # Interception Reservoir
+	    if Pdt>0:
+		Si[i]=Si[i]+Pdt
+		Pedt=...
+		Si[i]=...
+		Eidt[i]=...
+	    else:
+		# Evaporation only when there is no rainfall
+		Pedt=...
+		Eidt[i]=...
+		Si[i]=...
+	    
+	    if i<tmax-1:
+		Si[i+1]=Si[i]
+	    
+	    
+	    # Unsaturated Reservoir
+	    if Pedt>0:
+		rho=(Su[i]/Sumax)**beta
+        	Qiudt=(1-rho)*Pedt # flux from Ir to Ur
+            	Su[i]=Su[i]+...
+		Qufdt=... #flux from Su to Sf
+	    else:
+		Qufdt=0
+	    
+	    # Transpiration
+	    Epdt=max(0,Epdt-Eidt[i])
+	    Eadt[i]=...
+	    Eadt[i]=min(..., ...)
+	    Su[i]=...
+	    # Percolation
+	    Qusdt=...*dt # Flux from Su to Ss
+	    Su[i]=...
+	    if i<tmax-1:
+		Su[i+1]=Su[i]
+	    
+	    # Fast Reservoir
+	    Sf[i]=...
+	    Qfdt= dt*Kf*Sf[i]
+	    Sf[i]=...
+	    if i<tmax-1:
+		Sf[i+1]=Sf[i]
+	    
+	    # Slow Reservoir
+	    Ss[i]=...
+	    Qsdt= ...
+	    Ss[i]=...
+	    if i<tmax-1:
+		...
+	    
+	    Qtotdt[i]=Qsdt+Qfdt
+
+
+	# Check Water Balance
+	Sf=Si[-1]+Ss[-1]+Sf[-1]+Su[-1] #final storage
+	Sin=sum(Sin) #initial storage
+	WB=sum(Prec)-sum(Eidt)-...
+
+	# Offset Q
+
+	Weigths=Weigfun(Tlag)
+	
+	Qm = np.convolve(Qtotdt,Weigths)
+	Qm=Qm[0:tmax]
+	
+
+	if hydrograph == 'TRUE':
+	## Plot
+	# hour=1:tmax\
+		plt.plot(range(0,len(Qo)),Qo)
+		plt.plot(range(0,len(Qm)),Qm)
+		plt.show()
+
+	return(Qm)
+
+	
+	# leg['Qobs','Qmod']
